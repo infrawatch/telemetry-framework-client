@@ -3,13 +3,22 @@
   hosts: kube-master
   tasks:
     - import_role:
-        name: telemetry.prometheus-operator
+        name: redhat-nfvpe.prometheus-operator
         tasks_from: install.yml
       vars:
         promops_deploy:
           name: sa
           namespace: sa
+          include_alertmanager: false
+          monitor_k8s: false
+          spec:
+            replicas: 1
+          components:
+            - grafana/grafana-credentials.yaml
+            - grafana
+            - prometheus
+            - metrics-consumer
+            - events-consumer
           storage:
             class_name: sa
             size: 2Gi
-
