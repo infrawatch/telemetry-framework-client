@@ -19,6 +19,9 @@
         class_name: sa
         size: 2Gi
   tasks:
+    - include_vars:
+        file: dashboards.yml
+
     - import_role:
         name: redhat-nfvpe.prometheus-operator
         tasks_from: install.yml
