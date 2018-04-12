@@ -33,7 +33,7 @@
 
     - name: (elasticsearch) create service
       command: >
-        kubectl create -n {{ promops_deploy.namespace }} -f es-discovery-svc.yaml -f es-svc.yaml -f es-master.yaml
+        kubectl apply -n {{ promops_deploy.namespace }} -f es-discovery-svc.yaml -f es-svc.yaml -f es-master.yaml
       args:
         chdir: "{{ ansible_env.HOME }}/elasticsearch"
 
@@ -45,7 +45,7 @@
 
     - name: (elasticsearch) create client
       command: >
-        kubectl -n {{ promops_deploy.namespace }} create -f es-client.yaml
+        kubectl -n {{ promops_deploy.namespace }} apply -f es-client.yaml
       args:
         chdir: "{{ ansible_env.HOME }}/elasticsearch"
 
@@ -57,7 +57,7 @@
 
     - name: (elasticsearch) setup data
       command: >
-        kubectl -n {{ promops_deploy.namespace }} create -f es-data.yaml
+        kubectl -n {{ promops_deploy.namespace }} apply -f es-data.yaml
       args:
         chdir: "{{ ansible_env.HOME }}/elasticsearch"
 
