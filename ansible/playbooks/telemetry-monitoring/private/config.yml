@@ -7,6 +7,10 @@
       namespace: sa
       include_alertmanager: false
       monitor_k8s: false
+      prometheus:
+        nodeport: 31900
+      grafana:
+        nodeport: 31902
       spec:
         replicas: 1
       components:
