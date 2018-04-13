@@ -19,6 +19,9 @@
         - prometheus
         - metrics-consumer
         - events-consumer
+      service_monitors:
+        - events
+        - metrics
       storage:
         class_name: sa
         size: 2Gi
