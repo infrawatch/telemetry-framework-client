@@ -9,7 +9,7 @@ listeners:
       port: amqp
 
 connectors:
-    - name: telemetry-host-1
+    - name: central-qdr
       role: inter-router
-      host: 192.168.122.1
+      host: qdr-sa-telemetry.apps.nfvpe.site
       port: 20001

@@ -1,9 +1,7 @@
 ---
-barometer:
-  host: 172.17.0.1
-  port: 5672
-  plugin_connectivity:
-    interface: eth0
+barometer_host: 172.17.0.2
+barometer_port: 5672
+barometer_plugin_connectivity_interface: eth0
 
 plugins:
   - cpufreq

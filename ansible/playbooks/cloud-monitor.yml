@@ -1,19 +1,7 @@
 ---
-- import_playbook: ka-init/init.yml
-
-- hosts: other
-  become: true
-  become_user: root
+- hosts: localhost
   tasks: []
   roles:
-    - { role: install-docker }
-    - { role: telemetry.qdr-deployer, tags: ['qdr-cloud-side'] }
+    - { role: install-docker, become: true, become_user: root }
+    - { role: telemetry.qdr-deployer }
     - { role: telemetry.barometer-deployer }
-
-- hosts: virthost
-  become: true
-  become_user: root
-  tasks: []
-  roles:
-    - { role: install-docker }
-    - { role: telemetry.qdr-deployer, tags: ['qdr-telemetry-side'] }
