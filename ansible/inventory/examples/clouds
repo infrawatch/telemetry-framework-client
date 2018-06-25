@@ -1,0 +1,9 @@
+virtcloud-1 ansible_host=10.19.110.73
+virtcloud-2 ansible_host=10.19.110.74
+
+[nodes]
+virtcloud-1
+virtcloud-2
+
+[nodes:vars]
+ansible_user=centos

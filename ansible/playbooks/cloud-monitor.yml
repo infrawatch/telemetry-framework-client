@@ -1,7 +1,7 @@
 ---
-- hosts: localhost
+- hosts: nodes
   tasks: []
   roles:
-    - { role: install-docker, become: true, become_user: root }
-    - { role: telemetry.qdr-deployer }
-    - { role: telemetry.barometer-deployer }
+    - { role: install-docker, become: true, become_user: root, when: docker_install }
+    - { role: telemetry.qdr-deployer, become: true, become_user: root }
+    - { role: telemetry.barometer-deployer, become: true, become_user: root }

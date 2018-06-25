@@ -1,15 +1,16 @@
 ---
+qdr_dns_servers: 10.19.110.9
+
 router:
     id_prefix: BAROMETER_ROUTER
     mode: interior
 
 listeners:
-    - name: cloud-node-1
-      host: 0.0.0.0
+    - host: 0.0.0.0
       port: amqp
 
 connectors:
     - name: central-qdr
       role: inter-router
-      host: qdr-sa-telemetry.apps.nfvpe.site
+      host: blue.qdr-sa-telemetry.apps.nfvpe.site
       port: 20001

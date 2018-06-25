@@ -1,5 +1,5 @@
 ---
-barometer_host: 172.17.0.2
+barometer_host: 127.0.0.1
 barometer_port: 5672
 barometer_plugin_connectivity_interface: eth0
 

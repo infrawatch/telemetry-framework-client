@@ -1,2 +1,4 @@
 roles/*
 !roles/telemetry.*
+inventory/*
+!inventory/examples

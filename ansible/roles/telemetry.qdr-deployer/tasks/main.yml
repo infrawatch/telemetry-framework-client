@@ -28,5 +28,7 @@
     image: nfvpe/qpid-dispatch-router
     exposed_ports: 5672/tcp
     volumes: "{{ ansible_env.HOME }}/qdr.conf.d/:/etc/qdr.conf.d/:Z"
+    dns_servers: "{{ qdr_dns_servers }}"
+    network_mode: host
     restart: yes
     command: "--config=/etc/qdr.conf.d/qdrouterd.conf"
