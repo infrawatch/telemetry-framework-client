@@ -16,8 +16,11 @@
     dest: "{{ ansible_env.HOME }}/barometer-collectd.conf.d/{{ item }}.conf"
   with_items:
     - default
-    - barometer
-    - conn_event
+    - amqp1
+    - cpu
+    - connectivity
+    - procevent
+    - sysevent
 
 - name: Start barometer-collectd container
   docker_container:

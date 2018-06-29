@@ -1,0 +1,9 @@
+LoadPlugin sysevent
+
+<Plugin "sysevent">
+  Listen "127.0.0.1" "6666"
+  BufferSize 4096
+  BufferLength 200
+  RegexFilter "^.*a.*$"
+  RegexFilter "^b.*$"
+</Plugin>

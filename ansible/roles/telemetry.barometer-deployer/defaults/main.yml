@@ -2,10 +2,10 @@
 barometer_host: 127.0.0.1
 barometer_port: 5672
 barometer_plugin_connectivity_interface: eth0
+barometer_interval: 1
 
 plugins:
   - cpufreq
-  - cpu
   - disk
   - ethstat
   - ipc

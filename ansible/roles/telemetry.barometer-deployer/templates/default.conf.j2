@@ -1,4 +1,5 @@
 Hostname "{{ ansible_fqdn }}"
+Interval {{ barometer_interval }}
 
 {% for plugin in plugins %}
 LoadPlugin {{ plugin }}
