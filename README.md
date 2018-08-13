@@ -1,15 +1,15 @@
-# Telemetry Ansible
+# Telemetry Framework Client Automation
 
-Used during the deployment of a test bed. These files contain the configuration
-and deployment strategies for getting a client side Barometer collectd
-container and localized QDR setup for connection to the OpenShift cluster
-running the telemtry platform.
+Used during the deployment of the telemetry framework client side test bed.
+These files contain the configuration and deployment strategies for getting
+a client side Barometer collectd container and localized QPID dispatch router (QDR)
+setup for connection to the OpenShift cluster running the telemtry framework platform.
 
 ## Prerequisites
 
-It's assumed you're running CentOS 7.4, and that you've performed an update of
-the system with `sudo yum update -y && sudo reboot`. Additionally, you should
-install `epel-release` with `sudo yum install epel-release -y`.
+It's assumed you're running CentOS 7.5 (or RHEL 7.5), and that you've performed an
+update of the system with `sudo yum update -y && sudo systemctl reboot`. Additionally,
+you should install `epel-release` with `sudo yum install epel-release -y`.
 
 After performing your system update and `epel-release` installation, you'll
 need to install Ansible 2.5+ as well. You can do that with `sudo yum install
