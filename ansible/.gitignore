@@ -2,3 +2,5 @@ roles/*
 !roles/telemetry.*
 inventory/*
 !inventory/examples
+vars/*
+!vars/cloud_vars.yml
