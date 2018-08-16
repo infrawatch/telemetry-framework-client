@@ -1,9 +1,8 @@
 ---
 - name: Get barometer-collect container image
   docker_image:
-    name: "{{ item }}"
-  with_items:
-    - nfvpe/barometer-collectd
+    name: "{{ barometer_image }}"
+    tag: "{{ barometer_image_tag }}"
 
 - name: Create directory for barometer-collectd configuration
   file:
@@ -25,7 +24,7 @@
 - name: Start barometer-collectd container
   docker_container:
     name: barometer
-    image: nfvpe/barometer-collectd
+    image: "{{ barometer_image }}:{{ barometer_image_tag }}"
     privileged: yes
     network_mode: host
     entrypoint: /sbin/collectd -f -C /opt/collectd/etc/collectd.conf.d/

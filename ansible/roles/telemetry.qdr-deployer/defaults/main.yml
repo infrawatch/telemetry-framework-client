@@ -1,5 +1,7 @@
 ---
 qdr_dns_servers: 10.19.110.9
+qdr_image: nfvpe/qpid-dispatch-router
+qdr_image_tag: 1.2.0-2
 
 router:
     id_prefix: BAROMETER_ROUTER

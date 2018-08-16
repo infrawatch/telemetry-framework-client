@@ -1,16 +1,24 @@
 ---
-- name: Install docker-py
+- name: Install requests python module via pip
   become: true
   become_user: root
-  package:
-    name: docker-python
+  pip:
+    name: requests
+    version: 2.19.1
+    state: present
+
+- name: Install docker python module via pip
+  become: true
+  become_user: root
+  pip:
+    name: docker
+    version: 3.5.0
     state: present
 
 - name: Get QDR container image
   docker_image:
-    name: "{{ item }}"
-  with_items:
-    - nfvpe/qpid-dispatch-router
+    name: "{{ qdr_image }}"
+    tag: "{{ qdr_image_tag }}"
 
 - name: Create directory for QDR configuration
   file:
@@ -25,10 +33,10 @@
 - name: Start QDR container (cloud side)
   docker_container:
     name: qdr
-    image: nfvpe/qpid-dispatch-router
+    image: "{{ qdr_image }}:{{ qdr_image_tag }}"
     exposed_ports: 5672/tcp
     volumes: "{{ ansible_env.HOME }}/qdr.conf.d/:/etc/qdr.conf.d/:Z"
     dns_servers: "{{ qdr_dns_servers }}"
     network_mode: host
     restart: yes
-    command: "--config=/etc/qdr.conf.d/qdrouterd.conf"
+    command: "/sbin/qdrouterd --config=/etc/qdr.conf.d/qdrouterd.conf"
