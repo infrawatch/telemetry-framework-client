@@ -1,4 +1,21 @@
 ---
+- name: Install EPEL repository
+  become: true
+  become_user: true
+  package:
+    name: epel-release
+    state: present
+
+- name: Install package dependencies
+  become: true
+  become_user: root
+  package:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+      - python-pip
+
 - name: Install requests python module via pip
   become: true
   become_user: root
