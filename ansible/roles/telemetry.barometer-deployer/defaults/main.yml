@@ -1,21 +1,32 @@
 ---
 barometer_host: 127.0.0.1
 barometer_port: 5672
-barometer_plugin_connectivity_interface: eth0
-barometer_interval: 1
+barometer_interval: 5
 barometer_image: nfvpe/barometer-collectd
 barometer_image_tag: latest
+barometer_plugin_connectivity_interfaces:
+  - eth0
+barometer_plugin_procevent_bufferlength: 1000
+barometer_plugin_procevent_processes:
+  - tuned
+  - qemu-kvm
+barometer_plugin_ipmi_username: ADMIN
+barometer_plugin_ipmi_password: ADMIN
+barometer_plugin_virt_refreshinterval: 60
+barometer_plugin_virt_hostnameformat: hostname
+barometer_plugin_virt_plugininstanceformat: name
+barometer_plugin_virt_extrastats: "cpu_util disk_err domain_state fs_info job_stats_background perf vcpupin"
 
 plugins:
   - cpufreq
-  - disk
-  - ethstat
-  - ipc
-  - load
-  - memory
-  - numa
-  - processes
-  - df
-  - uptime
-  - network
   - interface
+  - disk
+  - load
+  - ovs_stats
+  - hugepages
+  - processes
+  - uptime
+  - df
+  - virt
+  - memory
+  - intel_rdt
