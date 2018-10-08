@@ -1,0 +1,39 @@
+---
+router:
+    id_prefix: BAROMETER_ROUTER
+    mode: interior
+
+listeners:
+    - name: cloud-node
+      host: 0.0.0.0
+      port: amqp
+
+connectors:
+    - name: central-router
+      role: inter-router
+      host: blue.qdr-sa-telemetry.apps.nfvpe.site 
+      port: 20001
+
+barometer_host: 127.0.0.1
+barometer_port: 5672
+barometer_interval: 60
+barometer_image: nfvpe/barometer-collectd
+barometer_image_tag: latest
+barometer_plugin_connectivity_interfaces:
+  - eth0
+
+plugins:
+  - cpufreq
+  - interface
+  - disk
+  - load
+  - processes
+  - uptime
+  - df
+  - memory
+  - ovs_stats
+  - ovs_events
+  - hugepages
+  - virt
+
+
