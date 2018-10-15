@@ -1,4 +1,5 @@
 ---
+
 - name: Get barometer-collect container image
   docker_image:
     name: "{{ barometer_image }}"
@@ -14,12 +15,8 @@
     src: "{{ item }}.conf.j2"
     dest: "{{ barometer_root_config_path }}/{{ item }}.conf"
   with_items:
-    - default
-    - amqp1
-    - cpu
-    - connectivity
-    - procevent
-    - sysevent
+    - collectd
+  tags: update_only
 
 - name: Start barometer-collectd container
   docker_container:
@@ -33,3 +30,4 @@
       - /var/run:/var/run
       - /tmp:/tmp
     restart: yes
+  tags: update_only, restart

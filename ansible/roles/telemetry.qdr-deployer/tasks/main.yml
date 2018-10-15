@@ -1,11 +1,19 @@
 ---
-- name: Install EPEL repository
+- name: Install EPEL repository on Fedora and Centos
   become: true
   become_user: root
   package:
     name: epel-release
     state: present
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+#- name: Enable PIP repo on RHEL
+#  become: true
+#  become_user: root
+#  rhsm_repository:
+#    name: rhel-server-rhscl-7-rpms
+#    state: enabled
+#  when: ansible_distribution == 'RedHat'
 
 - name: Install package dependencies
   become: true
@@ -16,22 +24,42 @@
   vars:
     packages:
       - python-pip
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
-- name: Install requests python module via pip
-  become: true
-  become_user: root
-  pip:
-    name: requests
-    version: 2.19.1
-    state: present
+#- name: Install package dependencies when on RHEL
+#  become: true
+#  become_user: root
+#  package:
+#    name: "{{ packages }}"
+#    state: present
+#  vars:
+#    packages:
+#      - python27-python-pip
+#  when: ansible_distribution == 'RedHat'
 
-- name: Install docker python module via pip
-  become: true
-  become_user: root
-  pip:
-    name: docker
-    version: 3.5.0
-    state: present
+#- name: Update python-pip when on RHEL
+#  become: true
+#  become_user: root
+#  shell: scl enable python27 'pip install --upgrade pip'
+#  args:
+#     executable: /bin/bash
+#  when: ansible_distribution == 'RedHat'
+
+#- name: Install requests python module via pip
+#  become: true
+#  become_user: root
+#  pip:
+#    name: requests
+#    version: 2.19.1
+#    state: present
+
+#- name: Install docker python module via pip
+#  become: true
+#  become_user: root
+#  pip:
+#    name: docker
+#    version: 3.5.0
+#    state: present
 
 - name: Get QDR container image
   docker_image:
@@ -56,5 +84,6 @@
     volumes: "{{ qdr_root_config_path }}/:/etc/qdr.conf.d/:Z"
     dns_servers: "{{ qdr_dns_servers }}"
     network_mode: host
+    privileged: yes
     restart: yes
     command: "/sbin/qdrouterd --config=/etc/qdr.conf.d/qdrouterd.conf"

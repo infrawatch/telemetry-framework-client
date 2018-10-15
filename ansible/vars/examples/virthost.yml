@@ -22,18 +22,14 @@ barometer_image_tag: latest
 barometer_plugin_connectivity_interfaces:
   - eth0
 
-plugins:
-  - cpufreq
-  - interface
-  - disk
-  - load
-  - processes
-  - uptime
-  - df
-  - memory
-  - ovs_stats
-  - ovs_events
-  - hugepages
-  - virt
+barometer_plugin_ceph:
+  - daemon: "osd.0"
+    socketpath: "/var/run/ceph/ceph-osd.0.asok"
+  - daemon: "osd.1"
+    socketpath: "/var/run/ceph/ceph-osd.1.asok"
+  - daemon: "mon.a"
+    socketpath: "/var/run/ceph/ceph-mon.ceph1.asok"
+  - daemon: "mds.a"
+    socketpath: "/var/run/ceph/ceph-mds.ceph1.asok"
 
 

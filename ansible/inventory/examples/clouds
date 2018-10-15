@@ -1,9 +1,26 @@
-virtcloud-1 ansible_host=10.19.110.73
-virtcloud-2 ansible_host=10.19.110.74
+osp1-compute0 ansible_host=10.19.110.21
+osp1-controller0 ansible_host=10.19.110.1
+osp1-ceph0 ansible_host=10.19.110.3
+ocp1-master-node ansible_host=10.19.110.65
+ocp1-node-node ansible_host=10.19.110.68
+ocp1-infra-node ansible_host=10.19.110.71
 
-[nodes]
-virtcloud-1
-virtcloud-2
+[osp_compute]
+osp1-compute0
 
-[nodes:vars]
+[os_controller]
+osp1-controller0
+
+[os_ceph]
+osp1_ceph0
+
+[ocp_allinone]
+ocp1-master-node
+ocp1-node-node
+ocp1-infra-node
+
+[osp_compute:vars]
+ansible_user=root
+
+[ocp_allinone:vars]
 ansible_user=centos
