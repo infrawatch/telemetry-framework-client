@@ -7,12 +7,12 @@
 - name: Create directory for barometer-collectd configuration
   file:
     state: directory
-    path: "{{ ansible_env.HOME }}/barometer-collectd.conf.d"
+    path: "{{ barometer_root_config_path }}"
 
 - name: Deploy configuration for barometer-collectd on client
   template:
     src: "{{ item }}.conf.j2"
-    dest: "{{ ansible_env.HOME }}/barometer-collectd.conf.d/{{ item }}.conf"
+    dest: "{{ barometer_root_config_path }}/{{ item }}.conf"
   with_items:
     - default
     - amqp1
@@ -29,7 +29,7 @@
     network_mode: host
     entrypoint: /sbin/collectd -f -C /opt/collectd/etc/collectd.conf.d/
     volumes:
-      - "{{ ansible_env.HOME }}/barometer-collectd.conf.d/:/opt/collectd/etc/collectd.conf.d/"
+      - "{{ barometer_root_config_path }}/:/opt/collectd/etc/collectd.conf.d/"
       - /var/run:/var/run
       - /tmp:/tmp
     restart: yes

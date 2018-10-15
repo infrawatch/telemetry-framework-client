@@ -41,19 +41,19 @@
 - name: Create directory for QDR configuration
   file:
     state: directory
-    path: "{{ ansible_env.HOME }}/qdr.conf.d"
+    path: "{{ qdr_root_config_path }}"
 
 - name: Deploy configuration for QDR on client
   template:
     src: qdrouterd.conf.j2
-    dest: "{{ ansible_env.HOME }}/qdr.conf.d/qdrouterd.conf"
+    dest: "{{ qdr_root_config_path }}/qdrouterd.conf"
 
 - name: Start QDR container (cloud side)
   docker_container:
     name: qdr
     image: "{{ qdr_image }}:{{ qdr_image_tag }}"
     exposed_ports: 5672/tcp
-    volumes: "{{ ansible_env.HOME }}/qdr.conf.d/:/etc/qdr.conf.d/:Z"
+    volumes: "{{ qdr_root_config_path }}/:/etc/qdr.conf.d/:Z"
     dns_servers: "{{ qdr_dns_servers }}"
     network_mode: host
     restart: yes
