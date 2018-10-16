@@ -1,10 +1,10 @@
 LoadPlugin procevent
 
 <Plugin "procevent">
-  BufferLength {{ barometer_plugin_procevent_bufferlength }}
+  BufferLength {{ collectd_plugin_procevent_bufferlength }}
   RegexProcess "metric-listener"
   RegexProcess "event-listener"
-{% for process in barometer_plugin_procevent_processes %}
+{% for process in collectd_plugin_procevent_processes %}
   Process "{{ process }}"
 {% endfor %}
 </Plugin>

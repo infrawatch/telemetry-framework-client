@@ -1,0 +1,27 @@
+Hostname "{{ ansible_fqdn }}"
+Interval {{ collectd_interval }}
+
+{% for plugin in plugins %}
+LoadPlugin {{ plugin }}
+{% endfor %}
+
+<Plugin df>
+  ValuesPercentage true
+</Plugin>
+
+<Plugin intel_rdt>
+  Interval 1
+</Plugin>
+
+<Plugin ipmi>
+  Username {{ collectd_plugin_ipmi_username }}
+  Password {{ collectd_plugin_ipmi_password }}
+</Plugin>
+
+<Plugin virt>
+  Connection "qemu:///system"
+  RefreshInterval {{ collectd_plugin_virt_refreshinterval }}
+  HostnameFormat {{ collectd_plugin_virt_hostnameformat }}
+  PluginInstanceFormat {{ collectd_plugin_virt_plugininstanceformat }}
+  ExtraStats "{{ collectd_plugin_virt_extrastats }}"
+</Plugin>

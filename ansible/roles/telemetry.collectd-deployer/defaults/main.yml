@@ -1,0 +1,33 @@
+---
+collectd_host: 127.0.0.1
+collectd_port: 5672
+collectd_interval: 5
+collectd_root_config_path: /opt/sa/barometer-collectd.conf.d
+collectd_image: nfvpe/barometer-collectd
+collectd_image_tag: latest
+collectd_plugin_connectivity_interfaces:
+  - eth0
+collectd_plugin_procevent_bufferlength: 1000
+collectd_plugin_procevent_processes:
+  - tuned
+  - qemu-kvm
+collectd_plugin_ipmi_username: ADMIN
+collectd_plugin_ipmi_password: ADMIN
+collectd_plugin_virt_refreshinterval: 60
+collectd_plugin_virt_hostnameformat: hostname
+collectd_plugin_virt_plugininstanceformat: name
+collectd_plugin_virt_extrastats: "cpu_util disk_err domain_state fs_info job_stats_background perf vcpupin"
+
+plugins:
+  - cpufreq
+  - interface
+  - disk
+  - load
+  - ovs_stats
+  - hugepages
+  - processes
+  - uptime
+  - df
+  - virt
+  - memory
+  - intel_rdt

@@ -1,18 +1,18 @@
 ---
 - name: Get barometer-collect container image
   docker_image:
-    name: "{{ barometer_image }}"
-    tag: "{{ barometer_image_tag }}"
+    name: "{{ collectd_image }}"
+    tag: "{{ collectd_image_tag }}"
 
 - name: Create directory for barometer-collectd configuration
   file:
     state: directory
-    path: "{{ barometer_root_config_path }}"
+    path: "{{ collectd_root_config_path }}"
 
 - name: Deploy configuration for barometer-collectd on client
   template:
     src: "{{ item }}.conf.j2"
-    dest: "{{ barometer_root_config_path }}/{{ item }}.conf"
+    dest: "{{ collectd_root_config_path }}/{{ item }}.conf"
   with_items:
     - default
     - amqp1
@@ -24,12 +24,12 @@
 - name: Start barometer-collectd container
   docker_container:
     name: barometer
-    image: "{{ barometer_image }}:{{ barometer_image_tag }}"
+    image: "{{ collectd_image }}:{{ collectd_image_tag }}"
     privileged: yes
     network_mode: host
     entrypoint: /sbin/collectd -f -C /opt/collectd/etc/collectd.conf.d/
     volumes:
-      - "{{ barometer_root_config_path }}/:/opt/collectd/etc/collectd.conf.d/"
+      - "{{ collectd_root_config_path }}/:/opt/collectd/etc/collectd.conf.d/"
       - /var/run:/var/run
       - /tmp:/tmp
     restart: yes

@@ -1,6 +1,6 @@
 ---
 router:
-    id_prefix: BAROMETER_ROUTER
+    id_prefix: COLLECTD_ROUTER
     mode: interior
 
 listeners:
