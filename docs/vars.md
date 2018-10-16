@@ -18,7 +18,7 @@ A prefix that is added to the beginining of the router name
 The mode that the QDR is to run in [*interior|edge*].  This should be *interior*.
 
     router:
-        id_prefix: BAROMETER_ROUTER
+        id_prefix: COLLECTD_ROUTER
         mode: interior
 
 ### listeners
@@ -53,25 +53,25 @@ Which port to connect to.  Defaults to 20001 in standard SA install.
           port: 20001
 
 ## General Collecd/Barometer variables
-### barometer_host
+### collectd_host
 Address of the local QDR to connect to.  Should be 127.0.0.1
-    barometer_host: 127.0.0.1
+    collectd_host: 127.0.0.1
 
-### barometer_port
+### collectd_port
 Port to connect to for QDR.  Should be AMQP(5672)
-     barometer_port: 5672
+     collectd_port: 5672
 
-### barometer_interval
+### collectd_interval
 Default polling interval for all collectd plugins.  Specific plugins may override this value
-    barometer_interval: 5
+    collectd_interval: 5
 
-### barometer_image
+### collectd_image
 Location of image on hub.docker.io    
-    barometer_image: nfvpe/barometer-collectd
+    collectd_image: nfvpe/barometer-collectd
 
-### barometer_image_tag
+### collectd_image_tag
 Tag of image
-    barometer_image_tag: latest
+    collectd_image_tag: latest
 
 ### plugins
 What plugins are to be included.  If a list is provided, only that plugins will be loaded.  If no list is provided. the following list will be enabled.
@@ -93,57 +93,57 @@ What plugins are to be included.  If a list is provided, only that plugins will 
       - intel_rdt
 
 ## Plugin specific variables
-### barometer_plugin_connectivity_interfaces
+### collectd_plugin_connectivity_interfaces
 The connectivity plugin monitors kernel network interfaces for link status changes.  The plugin is 
 *event-driven* and reacts within 100's of milliseconds of an event occurring.  If an interface is 
 specified, only that interface is monitored.  If no interface is specified, all interfaces are 
 monitored.
 
-    barometer_plugin_connectivity_interfaces:
+    collectd_plugin_connectivity_interfaces:
       - eth0
 
-### barometer_plugin_procevent_bufferlength
+### collectd_plugin_procevent_bufferlength
 How many big is the event buffer?
-    barometer_plugin_procevent_bufferlength: 1000
+    collectd_plugin_procevent_bufferlength: 1000
     
-### barometer_plugin_procevent_processes
+### collectd_plugin_procevent_processes
 Which processes to monitor.  qemu-kvm should be included for virtual hosts.
 
-    barometer_plugin_procevent_processes:
+    collectd_plugin_procevent_processes:
       - tuned
       - qemu-kvm
       
-### barometer_plugin_ipmi_username/password
+### collectd_plugin_ipmi_username/password
 Login information for the host IPMI  
 
-    barometer_plugin_ipmi_username: ADMIN
-    barometer_plugin_ipmi_password: ADMIN
+    collectd_plugin_ipmi_username: ADMIN
+    collectd_plugin_ipmi_password: ADMIN
 
-### barometer_plugin_virt_refreshinterval
+### collectd_plugin_virt_refreshinterval
 How often to refresh the virt domain information.  Not recommended to go below 60 seconds.
 
-    barometer_plugin_virt_refreshinterval: 60
+    collectd_plugin_virt_refreshinterval: 60
 
-### barometer_plugin_virt_hostnameformat
-    barometer_plugin_virt_hostnameformat: hostname
+### collectd_plugin_virt_hostnameformat
+    collectd_plugin_virt_hostnameformat: hostname
     
-### barometer_plugin_virt_plugininstanceformat    
-    barometer_plugin_virt_plugininstanceformat: name
+### collectd_plugin_virt_plugininstanceformat    
+    collectd_plugin_virt_plugininstanceformat: name
     
-### barometer_plugin_virt_extrastats
+### collectd_plugin_virt_extrastats
 What additional information should be included in virt collection.  A guest agent is necessary for fs_info.    
 
-    barometer_plugin_virt_extrastats: "cpu_util disk_err domain_state fs_info job_stats_background perf vcpupin"
+    collectd_plugin_virt_extrastats: "cpu_util disk_err domain_state fs_info job_stats_background perf vcpupin"
 
-### barometer_plugin_cpu_interval
+### collectd_plugin_cpu_interval
 How often to sample the cpu information    
 
-    barometer_plugin_cpu_interval: 5
+    collectd_plugin_cpu_interval: 5
 
-### barometer_plugin_ceph
+### collectd_plugin_ceph
 Setup monitoring of a ceph node.  Specify OSDs, MONs, and MDSs and there location.
 
-    barometer_plugin_ceph:
+    collectd_plugin_ceph:
       - daemon: "osd.0"
         socketpath: "/var/run/ceph/ceph-osd.0.asok"
       - daemon: "osd.1"
