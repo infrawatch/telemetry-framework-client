@@ -1,0 +1,29 @@
+# vim: set tabstop=2 shiftwidth=2 expandtab :
+---
+all:
+  hosts:
+    virtcloud-1:
+      ansible_host: 10.19.110.9
+    virtcloud-2:
+      ansible_host: 10.19.110.11
+    osp13-compute0:
+      ansible_host: 10.19.110.17
+    osp13-controller:
+      ansible_host: 10.19.111.128
+  children:
+    virthost:
+      hosts:
+        virtcloud-1:
+        virtcloud-2:
+      vars:
+        ansible_user: root
+    osp_compute:
+      hosts:
+        osp13-compute0:
+      vars:
+        ansible_user: root
+    osp_controller:
+      hosts:
+        osp13-controller:
+      vars:
+        ansible_user: root
