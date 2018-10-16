@@ -1,9 +1,36 @@
-virtcloud-1 ansible_host=10.19.110.73
-virtcloud-2 ansible_host=10.19.110.74
+---
+all:
+  hosts:
+    osp1-compute0:
+      ansible_host: 10.19.110.21
+    osp1-controller0:
+      ansible_host: 10.19.110.1
+    osp1-ceph0:
+      ansible_host: 10.19.110.3
+    ocp1-master-node:
+      ansible_host: 10.19.110.65
+    ocp1-node-node:
+      ansible_host: 10.19.110.68
+    ocp1-infra-node:
+      ansible_host: 10.19.110.71
+  children:
+    osp_compute:
+      hosts:
+        osp1-compute0:
+      vars:
+        ansible_user: root
+    osp_controller:
+      hosts:
+        osp1-controller0:
+    os_ceph:
+      hosts:
+        osp1_ceph0:
+    ocp_allinone:
+      hosts:
+        ocp1-master-node:
+        ocp1-node-node:
+        ocp1-infra-node:
+      vars:
+        ansible_user: centos
 
-[nodes]
-virtcloud-1
-virtcloud-2
-
-[nodes:vars]
-ansible_user=centos
+# vim: set ft=yaml shiftwidth=2 tabstop=2 expandtab smartindent :
