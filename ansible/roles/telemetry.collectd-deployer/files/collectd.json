@@ -1,0 +1,18 @@
+{
+    "command": "/usr/sbin/collectd -f", 
+    "config_files": [
+        {
+            "dest": "/", 
+            "merge": true, 
+            "preserve_properties": true, 
+            "source": "/var/lib/kolla/config_files/src/*"
+        }
+    ], 
+    "permissions": [
+        {
+            "owner": "collectd:collectd", 
+            "path": "/var/log/collectd", 
+            "recurse": true
+        }
+    ]
+}

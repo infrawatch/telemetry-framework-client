@@ -1,35 +1,63 @@
 ---
-- name: Get barometer-collect container image
+# Perform setup same as done in TripleO
+- name: create persistent logs directory
+  file:
+    path: /var/log/containers/collectd
+    state: directory
+- name: collectd logs readme
+  copy:
+    dest: /var/log/collectd/readme.txt
+    content: |
+      Log files from collectd containers can be found under
+      /var/log/containers/collectd.
+  ignore_errors: true
+
+# Perform custom logic mimicking the results from TripleO eventually
+- name: Get collectd container image
   docker_image:
     name: "{{ collectd_image }}"
     tag: "{{ collectd_image_tag }}"
 
-- name: Create directory for barometer-collectd configuration
+- name: Create directory for collectd configuration
   file:
     state: directory
-    path: "{{ collectd_root_config_path }}"
+    path: "{{ item }}"
+  with_items:
+    - "{{ collectd_kolla_config_files }}"
+    - "{{ collectd_config_data_puppet_generated }}/conf.d"
 
-- name: Deploy configuration for barometer-collectd on client
+- name: Deploy kolla configuration for collectd on host
+  copy:
+    src: collectd.json
+    dest: "{{ collectd_kolla_config_files }}/collectd.json"
+
+- name: Deploy configuration for collectd + modules on host
   template:
     src: "{{ item }}.conf.j2"
-    dest: "{{ collectd_root_config_path }}/{{ item }}.conf"
+    dest: "{{ collectd_config_data_puppet_generated }}/{{ item }}.conf"
   with_items:
-    - default
-    - amqp1
-    - cpu
-    - connectivity
-    - procevent
-    - sysevent
+    - collectd.conf
+    - conf.d/amqp1
+    - conf.d/cpu
+    - conf.d/connectivity
+    - conf.d/procevent
+    - conf.d/sysevent
 
-- name: Start barometer-collectd container
+- name: Start collectd container
   docker_container:
-    name: barometer
+    name: collectd
     image: "{{ collectd_image }}:{{ collectd_image_tag }}"
-    privileged: yes
     network_mode: host
-    entrypoint: /sbin/collectd -f -C /opt/collectd/etc/collectd.conf.d/
+    pid_mode: host
+    privileged: yes
+    user: root
+    restart: always
     volumes:
-      - "{{ collectd_root_config_path }}/:/opt/collectd/etc/collectd.conf.d/"
-      - /var/run:/var/run
-      - /tmp:/tmp
-    restart: yes
+      - "{{ collectd_kolla_config_files }}/collectd.json:/var/lib/kolla/config_files/config.json:ro"
+      - "{{ collectd_config_data_puppet_generated }}:/var/lib/kolla/config_files/src:ro"
+      - /var/log/containers/collectd:/var/log/collectd:rw
+      - /var/run/openvswitch:/var/run/openvswitch:ro
+      - /var/run/ceph:/var/run/ceph:ro
+      - /var/run/libvirt:/var/run/libvirt:ro
+    env:
+      KOLLA_CONFIG_STRATEGY: COPY_ALWAYS
