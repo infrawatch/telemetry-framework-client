@@ -1,9 +1,10 @@
 Hostname "{{ ansible_fqdn }}"
 Interval {{ collectd_interval }}
+Timeout 2
+ReadThreads 5
+WriteThreads 5
 
-{% for plugin in plugins %}
-LoadPlugin {{ plugin }}
-{% endfor %}
+Include "/etc/collectd/conf.d/*.conf"
 
 <Plugin df>
   ValuesPercentage true
