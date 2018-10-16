@@ -60,8 +60,72 @@ Location of image on hub.docker.io
 Tag of image
     barometer_image_tag: latest
 
+### plugins
+What plugins are to be included.  If a list is provided, only that plugins will be loaded.  If no list is provided. the following list will be enabled.
+
+    plugins:
+      - cpu
+      - cpufreq
+      - interface
+      - disk
+      - load
+      - ovs_stats (if compute or controller)
+      - ovs_events (if compute or controller)
+      - hugepages (if virtualization present)
+      - processes
+      - uptime
+      - df
+      - virt (if virtualization present)
+      - memory
+      - intel_rdt
+
 ## Plugin specific variables
 ### barometer_plugin_connectivity_interfaces
 The connectivity plugin monitors kernel network interfaces for link status changes.  The plugin is *event-driven* and reacts within 100's of milliseconds of an event occurring.  If an interface is specified, only that interface is monitored.  If no interface is specified, all interfaces are monitored.
     barometer_plugin_connectivity_interfaces:
       - eth0
+
+### barometer_plugin_procevent_bufferlength
+How many big is the event buffer?
+    barometer_plugin_procevent_bufferlength: 1000
+### barometer_plugin_procevent_processes
+Which processes to monitor.  qemu-kvm should be included for virtual hosts.
+
+    barometer_plugin_procevent_processes:
+      - tuned
+      - qemu-kvm
+### barometer_plugin_ipmi_username/password
+Login information for the host IPMI     
+    barometer_plugin_ipmi_username: ADMIN
+    barometer_plugin_ipmi_password: ADMIN
+
+### barometer_plugin_virt_refreshinterval
+How often to refresh the virt domain information.  Not recommended to go below 60 seconds.
+    barometer_plugin_virt_refreshinterval: 60
+
+### barometer_plugin_virt_hostnameformat
+    barometer_plugin_virt_hostnameformat: hostname
+### barometer_plugin_virt_plugininstanceformat    
+    barometer_plugin_virt_plugininstanceformat: name
+### barometer_plugin_virt_extrastats
+What additional information should be included in virt collection.  A guest agent is necessary for fs_info.    
+
+    barometer_plugin_virt_extrastats: "cpu_util disk_err domain_state fs_info job_stats_background perf vcpupin"
+
+### barometer_plugin_cpu_interval
+How often to sample the cpu information    
+
+    barometer_plugin_cpu_interval: 5
+
+### barometer_plugin_ceph
+Setup monitoring of a ceph node.  Specify OSDs, MONs, and MDSs and there location.
+
+    barometer_plugin_ceph:
+      - daemon: "osd.0"
+        socketpath: "/var/run/ceph/ceph-osd.0.asok"
+      - daemon: "osd.1"
+        socketpath: "/var/run/ceph/ceph-osd.1.asok"
+      - daemon: "mon.a"
+        socketpath: "/var/run/ceph/ceph-mon.ceph1.asok"
+      - daemon: "mds.a"
+        socketpath: "/var/run/ceph/ceph-mds.ceph1.asok"
