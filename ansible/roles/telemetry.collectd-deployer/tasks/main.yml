@@ -4,13 +4,6 @@
   file:
     path: /var/log/containers/collectd
     state: directory
-- name: collectd logs readme
-  copy:
-    dest: /var/log/collectd/readme.txt
-    content: |
-      Log files from collectd containers can be found under
-      /var/log/containers/collectd.
-  ignore_errors: true
 
 # Perform custom logic mimicking the results from TripleO eventually
 - name: Get collectd container image
@@ -36,7 +29,7 @@
     src: "{{ item }}.conf.j2"
     dest: "{{ collectd_config_data_puppet_generated }}/{{ item }}.conf"
   with_items:
-    - collectd.conf
+    - collectd
     - conf.d/amqp1
     - conf.d/cpu
     - conf.d/connectivity
