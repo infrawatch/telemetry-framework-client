@@ -1,5 +1,6 @@
 roles/*
 !roles/telemetry.*
+!roles/ansible-docker-prereq
 inventory/*
 !inventory/examples
 vars/*

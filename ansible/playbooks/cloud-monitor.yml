@@ -1,7 +1,22 @@
 ---
 - hosts: all
-  tasks: []
-  roles:
-    - { role: install-docker, become: true, become_user: root, when: docker_install | default(true) }
-    - { role: telemetry.qdr-deployer, become: true, become_user: root }
-    - { role: telemetry.collectd-deployer, become: true, become_user: root }
+  become: true
+  become_user: root
+  tasks:
+    - name: Install Docker
+      include_role:
+        name: install-docker
+      when: docker_install | default(true)
+
+    - name: Install pre-requisites for Docker modules
+      include_role:
+        name: ansible-docker-prereq
+      when: docker_modules_prereqs | default(true)
+
+    - name: Install QPID dispatch router (QDR)
+      include_role:
+        name: telemetry.qdr-deployer
+
+    - name: Install collectd
+      include_role:
+        name: telemetry.collectd-deployer
