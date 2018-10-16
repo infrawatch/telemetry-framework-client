@@ -14,12 +14,12 @@ connectors:
       host: blue.qdr-sa-telemetry.apps.nfvpe.site 
       port: 20001
 
-barometer_host: 127.0.0.1
-barometer_port: 5672
-barometer_interval: 60
-barometer_image: nfvpe/barometer-collectd
-barometer_image_tag: latest
-barometer_plugin_connectivity_interfaces:
+collectd_host: 127.0.0.1
+collectd_port: 5672
+collectd_interval: 60
+collectd_image: nfvpe/barometer-collectd
+collectd_image_tag: latest
+collectd_plugin_connectivity_interfaces:
   - eth0
 
 plugins:
@@ -36,4 +36,12 @@ plugins:
   - hugepages
   - virt
 
-
+collectd_plugin_ceph:
+  - daemon: "osd.0"
+    socketpath: "/var/run/ceph/ceph-osd.0.asok"
+  - daemon: "osd.1"
+    socketpath: "/var/run/ceph/ceph-osd.1.asok"
+  - daemon: "mon.a"
+    socketpath: "/var/run/ceph/ceph-mon.ceph1.asok"
+  - daemon: "mds.a"
+    socketpath: "/var/run/ceph/ceph-mds.ceph1.asok"

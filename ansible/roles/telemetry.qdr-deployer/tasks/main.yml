@@ -22,5 +22,7 @@
     volumes: "{{ qdr_root_config_path }}/:/etc/qdr.conf.d/:Z"
     dns_servers: "{{ qdr_dns_servers }}"
     network_mode: host
-    restart: yes
+    pid_mode: host
+    privileged: true
+    restart: always
     command: "/sbin/qdrouterd --config=/etc/qdr.conf.d/qdrouterd.conf"
