@@ -1,19 +1,19 @@
 ---
 router:
-    id_prefix: collectd_ROUTER
+    id_prefix: COLLECTD_ROUTER
     mode: interior
- 
+
 listeners:
     - name: cloud-node
       host: 0.0.0.0
       port: amqp
- 
+
 connectors:
     - name: central-router
       role: inter-router
       host: blue.qdr-sa-telemetry.apps.nfvpe.site
       port: 20001
- 
+
 collectd_host: 127.0.0.1
 collectd_port: 5672
 collectd_interval: 5
@@ -21,7 +21,7 @@ collectd_image: tripleomaster/centos-binary-collectd
 collectd_image_tag: current-tripleo
 collectd_plugin_connectivity_interfaces:
   - eth0
- 
+
 collectd_plugin_ceph:
   - daemon: "osd.0"
     socketpath: "/var/run/ceph/ceph-osd.0.asok"

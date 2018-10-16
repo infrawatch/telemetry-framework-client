@@ -17,13 +17,16 @@ all:
         virtcloud-2:
       vars:
         ansible_user: root
+        docker_modules_prereqs: false
     osp_compute:
       hosts:
         osp13-compute0:
       vars:
         ansible_user: root
+        docker_modules_prereqs: false
     osp_controller:
       hosts:
         osp13-controller:
       vars:
         ansible_user: root
+        docker_modules_prereqs: false
