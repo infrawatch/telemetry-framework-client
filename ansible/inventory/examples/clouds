@@ -19,12 +19,17 @@ all:
         osp1-compute0:
       vars:
         ansible_user: root
+        docker_modules_prereqs: false
     osp_controller:
       hosts:
         osp1-controller0:
+      vars:
+        docker_modules_prereqs: false
     os_ceph:
       hosts:
         osp1_ceph0:
+      vars:
+        docker_modules_prereqs: false
     ocp_allinone:
       hosts:
         ocp1-master-node:
