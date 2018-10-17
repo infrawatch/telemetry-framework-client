@@ -35,6 +35,7 @@
     - conf.d/connectivity
     - conf.d/procevent
     - conf.d/sysevent
+  tags: update_only
 
 - name: Start collectd container
   docker_container:
@@ -54,3 +55,4 @@
       - /var/run/libvirt:/var/run/libvirt:ro
     env:
       KOLLA_CONFIG_STRATEGY: COPY_ALWAYS
+  tags: update_only, restart
