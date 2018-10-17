@@ -17,7 +17,7 @@
     path: "{{ item }}"
   with_items:
     - "{{ collectd_kolla_config_files }}"
-    - "{{ collectd_config_data_puppet_generated }}/etc/collectd/conf.d"
+    - "{{ collectd_config_data_puppet_generated }}/etc/collectd"
 
 - name: Deploy kolla configuration for collectd on host
   copy:
@@ -30,11 +30,6 @@
     dest: "{{ collectd_config_data_puppet_generated }}/etc/collectd/{{ item }}.conf"
   with_items:
     - collectd
-    - conf.d/amqp1
-    - conf.d/cpu
-    - conf.d/connectivity
-    - conf.d/procevent
-    - conf.d/sysevent
   tags: update_only
 
 - name: Start collectd container
