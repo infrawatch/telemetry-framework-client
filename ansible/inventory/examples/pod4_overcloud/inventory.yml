@@ -1,0 +1,30 @@
+# vim: set tabstop=2 shiftwidth=2 expandtab :
+---
+all:
+  hosts:
+    pod4-overcloud-controller-0:
+      ansible_host: 10.12.36.63
+    pod4-overcloud-controller-1:
+      ansible_host: 10.12.36.59
+    pod4-overcloud-controller-2:
+      ansible_host: 10.12.36.52
+    pod4-overcloud-compute-0:
+      ansible_host: 10.12.36.54
+    pod4-overcloud-compute-1:
+      ansible_host: 10.12.36.55
+  children:
+    osp_compute:
+      hosts:
+        pod4-overcloud-compute-0:
+        pod4-overcloud-compute-1:
+      vars:
+        ansible_user: root
+        docker_modules_prereqs: false
+    osp_controller:
+      hosts:
+        pod4-overcloud-controller-0:
+        pod4-overcloud-controller-1:
+        pod4-overcloud-controller-2:
+      vars:
+        ansible_user: root
+        docker_modules_prereqs: false
