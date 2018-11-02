@@ -11,7 +11,7 @@ listeners:
 connectors:
     - name: central-router
       role: inter-router
-      host: blue-qdr.dev.nfvpe.site
+      host: blue-qdr.apps.dev.nfvpe.site
       port: 20001
 
 collectd_host: 127.0.0.1
