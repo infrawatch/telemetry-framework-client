@@ -9,7 +9,7 @@ router {
 
 {% if listeners is defined %}
 # This is for _client_ connections (senders and receivers, collectd wirtes to this )
-# to connect on port 5672:
+# to connect on port 5673:
 {% for listener in listeners %}
 listener {
     host: {{ listener.host }}
