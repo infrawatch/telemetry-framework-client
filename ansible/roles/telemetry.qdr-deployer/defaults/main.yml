@@ -1,8 +1,9 @@
 ---
-qdr_dns_servers: 10.19.110.9
-qdr_image: nfvpe/qpid-dispatch-router
-qdr_image_tag: 1.2.0-2
-qdr_root_config_path: /opt/sa/qdr.conf.d
+qdr_dns_servers: 10.19.110.9 
+qdr_image: tripleomaster/centos-binary-qdrouterd
+qdr_image_tag: current-tripleo-rdo
+qdr_kolla_config_files: /var/lib/kolla/config_files
+qdr_config_data_puppet_generated: /var/lib/config-data/puppet-generated/qdrouterd
 
 router:
     id_prefix: BAROMETER_ROUTER
@@ -10,7 +11,7 @@ router:
 
 listeners:
     - host: 0.0.0.0
-      port: amqp
+      port: 5673
 
 connectors:
     - name: central-qdr

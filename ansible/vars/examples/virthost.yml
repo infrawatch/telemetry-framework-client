@@ -6,7 +6,7 @@ router:
 listeners:
     - name: cloud-node
       host: 0.0.0.0
-      port: amqp
+      port: 5673
 
 connectors:
     - name: central-router
@@ -15,7 +15,7 @@ connectors:
       port: 20001
 
 collectd_host: 127.0.0.1
-collectd_port: 5672
+collectd_port: 5673
 collectd_interval: 60
 collectd_image: nfvpe/barometer-collectd
 collectd_image_tag: latest

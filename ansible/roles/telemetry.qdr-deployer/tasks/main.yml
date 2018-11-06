@@ -4,25 +4,59 @@
     name: "{{ qdr_image }}"
     tag: "{{ qdr_image_tag }}"
 
+- name: create persistent logs directory
+  file:
+    path: /var/log/container/qdrouterd
+    state: directory
+
+- name: make sure old-style persistent logs directory exists
+  file:
+    path: /var/log/qdrouterd
+    state: directory
+
+- name: qdrouterd logs readme
+  copy:
+    dest: /var/log/qdrouterd/readme.txt
+    content: |
+      Log files from qdrouterd containers can be found under
+      /var/log/containers/qdrouterd.
+  ignore_errors: true
+
 - name: Create directory for QDR configuration
   file:
     state: directory
-    path: "{{ qdr_root_config_path }}"
+    path: "{{ item }}"
+  with_items:
+    - "{{ qdr_kolla_config_files }}"
+    - "{{ qdr_config_data_puppet_generated }}/etc"    
+
+- name: Deploy kolla configuration for qdr on host
+  template:
+    src: qdrouterd.json.j2
+    dest: "{{  qdr_kolla_config_files }}/qdrouterd.json"
 
 - name: Deploy configuration for QDR on client
   template:
     src: qdrouterd.conf.j2
-    dest: "{{ qdr_root_config_path }}/qdrouterd.conf"
+    dest: "{{ qdr_config_data_puppet_generated }}/etc/qdrouterd.conf"
 
 - name: Start QDR container (cloud side)
   docker_container:
     name: qdr
     image: "{{ qdr_image }}:{{ qdr_image_tag }}"
-    exposed_ports: 5672/tcp
-    volumes: "{{ qdr_root_config_path }}/:/etc/qdr.conf.d/:Z"
+    exposed_ports: 5673/tcp
+    volumes: 
+      - "{{ qdr_kolla_config_files }}/qdrouterd.json:/var/lib/kolla/config_files/config.json:ro"
+      - "{{ qdr_config_data_puppet_generated }}:/var/lib/kolla/config_files/src:ro"
+      - /var/log/containers/qdrouterd:/var/log/qdrouterd:rw
+      - /var/run/openvswitch:/var/run/openvswitch:ro
+      - /var/run/ceph:/var/run/ceph:ro
+      - /var/run/libvirt:/var/run/libvirt:ro
     dns_servers: "{{ qdr_dns_servers }}"
     network_mode: host
     pid_mode: host
     privileged: true
-    restart: true
-    command: "/sbin/qdrouterd --config=/etc/qdr.conf.d/qdrouterd.conf"
+    restart_policy: unless-stopped
+    user: root
+    env:
+      KOLLA_CONFIG_STRATEGY: COPY_ALWAYS
