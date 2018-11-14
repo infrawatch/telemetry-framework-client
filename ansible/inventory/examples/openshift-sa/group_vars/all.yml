@@ -1,0 +1,44 @@
+---
+router:
+    id_prefix: collectd_ROUTER
+    mode: interior
+
+listeners:
+    - name: cloud-node
+      host: 0.0.0.0
+      port: 5673
+
+connectors:
+    - name: central-router
+      role: inter-router
+      host: blue-qdr.apps.dev.nfvpe.site
+      port: 20001
+
+collectd_host: 127.0.0.1
+collectd_port: 5673
+collectd_interval: 5
+collectd_image: tripleomaster/centos-binary-collectd
+collectd_image_tag: current-tripleo
+collectd_plugin_connectivity_interfaces:
+  - eth0
+
+plugins:
+  - cpufreq
+  - interface
+  - disk
+  - load
+  - hugepages
+  - processes
+  - uptime
+  - df
+  - memory
+
+collectd_plugin_ceph:
+  - daemon: "osd.0"
+    socketpath: "/var/run/ceph/ceph-osd.0.asok"
+  - daemon: "osd.1"
+    socketpath: "/var/run/ceph/ceph-osd.1.asok"
+  - daemon: "mon.a"
+    socketpath: "/var/run/ceph/ceph-mon.ceph1.asok"
+  - daemon: "mds.a"
+    socketpath: "/var/run/ceph/ceph-mds.ceph1.asok"
