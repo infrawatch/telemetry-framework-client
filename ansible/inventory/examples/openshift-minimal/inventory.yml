@@ -1,0 +1,26 @@
+# vim: set tabstop=2 shiftwidth=2 expandtab :
+---
+all:
+  hosts:
+    openshift-master-1:
+      ansible_host: 10.19.110.101
+    openshift-compute-1:
+      ansible_host: 10.19.110.104
+    openshift-compute-2:
+      ansible_host: 10.19.110.105
+    overcloud-compute-1:
+      ansible_host: 10.19.110.19
+    overcloud-compute-0:
+      ansible_host: 10.19.110.21
+  children:
+    virthost:
+      hosts:
+        openshift-master-1:
+        openshift-compute-1:
+        openshift-compute-2:
+        overcloud-compute-0:
+        overcloud-compute-1:
+      vars:
+        ansible_user: root
+        docker_modules_prereqs: true
+        docker_install: false
