@@ -1,9 +1,16 @@
 ---
-- name: Install EPEL repository on CentOS and RHEL
+- name: Install EPEL repository on CentOS (not RHEL)
   package:
     name: epel-release
     state: present
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  when: ansible_distribution == 'CentOS'
+
+- name: Enable a RHSM repository
+  rhsm_repository:
+    name: rhel-7-server-extras-rpms
+    state: enabled
+  when: ansible_distribution == 'RedHat'
+  ignore_errors: true
 
 - name: Install package dependencies
   package:
@@ -11,17 +18,5 @@
     state: present
   vars:
     packages:
-      - python-pip
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
-
-- name: Install requests python module via pip
-  pip:
-    name: requests
-    version: 2.19.1
-    state: present
-
-- name: Install docker python module via pip
-  pip:
-    name: docker
-    version: 3.5.0
-    state: present
+      - docker-python
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'

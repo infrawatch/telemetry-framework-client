@@ -1,5 +1,5 @@
 ---
-qdr_dns_servers: 10.19.110.9 
+qdr_dns_servers: 10.19.110.9
 qdr_image: tripleomaster/centos-binary-qdrouterd
 qdr_image_tag: current-tripleo-rdo
 qdr_kolla_config_files: /var/lib/kolla/config_files
