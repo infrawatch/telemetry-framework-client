@@ -1,0 +1,10 @@
+parameter_defaults:
+  CollectdConnectionType: amqp1
+  CollectdAmqpInstances:
+    telemetry:
+      format: JSON
+      presettle: true
+  MetricsQdrConnectors:
+    - host: 10.19.110.107
+      port: 20001
+      role: inter-router
