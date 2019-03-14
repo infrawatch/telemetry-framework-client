@@ -4,20 +4,21 @@ parameter_defaults:
             format: JSON
             presettle: true
 
-    CollectdAmqpInterval: 5
+    CollectdAmqpInterval: 30
     CollectdExtraPlugins:
+        - cpu
         - df
         - hugepages
         - ovs_events
         - ovs_stats
         - load
+        - uptime
 
     ExtraConfig:
         collectd::plugin::cpu::valuespercentage: true
         collectd::plugin::cpu::reportbycpu: true
         collectd::plugin::cpu::reportbystate: true
         collectd::plugin::cpu::reportnumcpu: false
-        collectd::plugin::cpu::interval: 5
         collectd::plugin::df::ignoreselected: true
         collectd::plugin::load::reportrelative: true
         collectd::plugin::interface::ignoreselected: true
