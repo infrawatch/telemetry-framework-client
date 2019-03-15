@@ -4,7 +4,7 @@ parameter_defaults:
             format: JSON
             presettle: true
 
-    CollectdAmqpInterval: 30
+    CollectdAmqpInterval: 1
     CollectdExtraPlugins:
         - cpu
         - df
