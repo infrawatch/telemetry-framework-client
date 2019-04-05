@@ -14,10 +14,9 @@ router {
 listener {
     host: {{ listener.host }}
     port: {{ listener.port }}
+    role: {{ listener.role }}
 {% if listener.role is defined %}    role: {{ listener.role }}
 {% endif %}
-    authenticatePeer: no
-    saslMechanisms: ANONYMOUS
 }
 
 {% endfor %}
@@ -28,14 +27,20 @@ listener {
 #
 {% for connector in connectors %}
 connector {
-    role: {{ connector.role }}
     host: {{ connector.host }}
     port: {{ connector.port }}
-    saslMechanisms: ANONYMOUS
+    role: {{ connector.role }}
+    sslProfile: default
+    verifyHostname: {{ connector.verify_hostname | default(true) }}
 }
-
 {% endfor %}
 {% endif %}
+
+sslProfile {
+    name: default
+    certFile: /tmp/tls.crt
+    privateKeyFile: /tmp/tls.key
+}
 # Various address prefix -> distribution pattern
 # configurations:
 #
@@ -66,10 +71,5 @@ address {
 
 address {
     prefix: collectd/telemetry
-    distribution: multicast
-}
-
-address {
-    prefix: collectd/notify
     distribution: multicast
 }

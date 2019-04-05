@@ -14,40 +14,35 @@
     path: /var/log/qdrouterd
     state: directory
 
-- name: qdrouterd logs readme
-  copy:
-    dest: /var/log/qdrouterd/readme.txt
-    content: |
-      Log files from qdrouterd containers can be found under
-      /var/log/containers/qdrouterd.
-  ignore_errors: true
-
 - name: Create directory for QDR configuration
   file:
     state: directory
     path: "{{ item }}"
   with_items:
-    - "{{ qdr_kolla_config_files }}"
-    - "{{ qdr_config_data_puppet_generated }}/etc"    
-
-- name: Deploy kolla configuration for qdr on host
-  template:
-    src: qdrouterd.json.j2
-    dest: "{{  qdr_kolla_config_files }}/qdrouterd.json"
+    - "{{ qdr_config_files }}"
 
 - name: Deploy configuration for QDR on client
   template:
     src: qdrouterd.conf.j2
-    dest: "{{ qdr_config_data_puppet_generated }}/etc/qdrouterd.conf"
+    dest: "{{ qdr_config_files }}/qdrouterd.conf"
+
+- name: Copy the certificate
+  template:
+    src: tls.crt.j2
+    dest: "{{ qdr_config_files }}/tls.crt"
+
+- name: Copy the key
+  template:
+    src: tls.key.j2
+    dest: "{{ qdr_config_files }}/tls.key"
 
 - name: Start QDR container (cloud side)
   docker_container:
     name: qdr
     image: "{{ qdr_image }}:{{ qdr_image_tag }}"
     exposed_ports: 5673/tcp
-    volumes: 
-      - "{{ qdr_kolla_config_files }}/qdrouterd.json:/var/lib/kolla/config_files/config.json:ro"
-      - "{{ qdr_config_data_puppet_generated }}:/var/lib/kolla/config_files/src:ro"
+    volumes:
+      - "{{ qdr_config_files }}:/tmp:ro"
       - /var/log/containers/qdrouterd:/var/log/qdrouterd:rw
       - /var/run/openvswitch:/var/run/openvswitch:ro
       - /var/run/ceph:/var/run/ceph:ro
@@ -58,5 +53,3 @@
     privileged: true
     restart_policy: unless-stopped
     user: root
-    env:
-      KOLLA_CONFIG_STRATEGY: COPY_ALWAYS

@@ -1,9 +1,8 @@
 ---
-qdr_dns_servers: 10.19.110.9
-qdr_image: tripleomaster/centos-binary-qdrouterd
-qdr_image_tag: current-tripleo-rdo
-qdr_kolla_config_files: /var/lib/kolla/config_files
-qdr_config_data_puppet_generated: /var/lib/config-data/puppet-generated/qdrouterd
+qdr_dns_servers: 10.19.110.3
+qdr_image: quay.io/interconnectedcloud/qdrouterd
+qdr_image_tag: 1.5.0
+qdr_config_files: /opt/qdrouterd/etc
 
 router:
     id_prefix: BAROMETER_ROUTER
@@ -11,10 +10,15 @@ router:
 
 listeners:
     - host: 0.0.0.0
+      port: 5672
+      role: normal
+    - host: 0.0.0.0
       port: 5673
+      role: normal
 
 connectors:
     - name: central-qdr
       role: inter-router
-      host: blue.qdr-sa-telemetry.apps.nfvpe.site
-      port: 20001
+      host: qdr-white-normal-sa-telemetry.apps.dev7.nfvpe.site
+      port: 443
+      verify_hostname: false
