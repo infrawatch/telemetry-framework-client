@@ -1,9 +1,6 @@
 Interval     1
 
 LoadPlugin amqp1
-{% if 'connectivity' in plugins %}
-LoadPlugin connectivity
-{% endif %}
 #LoadPlugin conntrack
 {% if 'cpu' in plugins %}
 LoadPlugin cpu
@@ -38,22 +35,15 @@ LoadPlugin memory
 {% if 'network' in plugins %}
 LoadPlugin network
 {% endif %}
-{% if 'ovs_events' in plugins %}
-LoadPlugin ovs_events
-{% endif %}
 {% if 'ovs_stats' in plugins %}
 LoadPlugin ovs_stats
 {% endif %}
 {% if 'processes' in plugins %}
 LoadPlugin processes
 {% endif %}
-{% if 'procevent' in plugins %}
-LoadPlugin procevent
-{% endif %}
 {% if 'uptime' in plugins %}
 LoadPlugin uptime
 {% endif %}
-##LoadPlugin varnish
 {% if 'virt' in plugins %}
 LoadPlugin virt
 {% endif %}
@@ -110,62 +100,50 @@ LoadPlugin virt
 
 {% if 'cpu' in plugins %}
 <Plugin cpu>
-  Interval {{ collectd_plugin_cpu_interval }}
-  ReportByCpu true
   ReportByState true
+  ReportByCpu true
   ValuesPercentage true
-  ReportNumCpu false
-  ReportGuestState false
+  ReportNumCpu true
+  ReportGuestState true
   SubtractGuestState true
 </Plugin>
 {% endif %}
 
 {% if 'df' in plugins %}
 <Plugin df>
-#	Device "/dev/hda1"
-#	Device "192.168.0.2:/mnt/nfs"
-#	MountPoint "/home"
-#	FSType "ext3"
-#	IgnoreSelected false
-#	ReportByDevice false
-#	ReportInodes false
-#	ValuesAbsolute true
-	ValuesPercentage true
+  IgnoreSelected true
+  ReportByDevice true
+  ReportInodes true
+  ValuesAbsolute true
+  ValuesPercentage true
 </Plugin>
 {% endif %}
 
 {% if 'disk' in plugins %}
 <Plugin disk>
-#	Disk "/^[hs]d[a-f][0-9]?$/"
-#	IgnoreSelected false
-#	UseBSDName false
-#	UdevNameAttr "DEVNAME"
+  IgnoreSelected false
 </Plugin>
 {% endif %}
 
 {% if 'hugepages' in plugins %}
 <Plugin hugepages>
-#    ReportPerNodeHP  true
-#    ReportRootHP     true
-#    ValuesPages      true
-#    ValuesBytes      false
-#    ValuesPercentage false
+  ReportPerNodeHP true
+  ReportRootHP true
+  ValuesPages true
+  ValuesBytes false
+  ValuesPercentage false
 </Plugin>
 {% endif %}
 
 {% if 'intel_rdt' in plugins %}
 <Plugin "intel_rdt">
-#  Cores "0-2"
-   Interval 1
 </Plugin>
 {% endif %}
 
 {% if 'interface' in plugins %}
 <Plugin interface>
-#	Interface "eth0"
-#	IgnoreSelected false
-#	ReportInactive true
-#	UniqueName false
+  IgnoreSelected true
+  ReportInactive true
 </Plugin>
 {% endif %}
 
@@ -211,8 +189,8 @@ LoadPlugin virt
 
 {% if 'memory' in plugins %}
 <Plugin memory>
-#	ValuesAbsolute true
-#	ValuesPercentage false
+  ValuesAbsolute true
+  ValuesPercentage true
 </Plugin>
 {% endif %}
 
@@ -243,16 +221,6 @@ LoadPlugin virt
 </Plugin>
 {% endif %}
 
-{% if 'procevent' in plugins %}
-<Plugin "procevent">
-   BufferLength {{ collectd_plugin_procevent_bufferlength }}
-{% for process in collectd_plugin_procevent_processes %}
-   Process "{{ process }}"
-{% endfor %}
-#  Process tuned
-</Plugin>
-{% endif %}
-
 {% if 'virt' in plugins %}
 <Plugin virt>
    Connection "qemu:///system"
@@ -260,15 +228,5 @@ LoadPlugin virt
    HostnameFormat {{ collectd_plugin_virt_hostnameformat }}
    PluginInstanceFormat {{ collectd_plugin_virt_plugininstanceformat }}
    ExtraStats "{{ collectd_plugin_virt_extrastats }}"
-#	Connection "xen:///"
-#	RefreshInterval 60
-#	Domain "name"
-#	BlockDevice "name:device"
-#	BlockDeviceFormat target
-#	BlockDeviceFormatBasename false
-#	InterfaceDevice "name:device"
-#	IgnoreSelected false
-#	InterfaceFormat name
-#	Instances 1
 </Plugin>
 {% endif %}
