@@ -5,6 +5,6 @@ parameter_defaults:
       format: JSON
       presettle: true
   MetricsQdrConnectors:
-    - host: 10.19.110.107
-      port: 20001
-      role: inter-router
+    - host: qdr-white-normal-sa-telemetry.apps.dev7.nfvpe.site 
+      port: 443
+      role: edge
