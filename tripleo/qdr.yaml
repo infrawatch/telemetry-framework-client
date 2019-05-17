@@ -8,3 +8,7 @@ parameter_defaults:
     - host: qdr-white-normal-sa-telemetry.apps.dev7.nfvpe.site 
       port: 443
       role: edge
+      sslProfile: sslProfile
+      verifyHostname: false
+  MetricsQdrSSLProfiles:
+    - name: sslProfile
