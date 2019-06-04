@@ -45,3 +45,60 @@ out the configuration. Login to the undercloud and then modify the
 to deploy the `metrics-collectd-qdr.yaml` environment (configuration via
 `qdr.yaml`) and the `collectd-environment.yaml` environment (configuration via
 `collectd.yaml`).
+
+# When TLS is enabled.
+
+Currently cert files can be generated for metrics_qdr via enabling internal TLS, which can be
+used to secure internal communication, # NOTE(vinaykns) at present this may not be useful but 
+this could be useful when a mesh topology is established using interior and edge mode operation.
+Since InternalApi network is not present in CephStorage role we need to have a custom Ceph role and 
+pass that during overcloud deployment. The custom ceph role looks something like
+
+- name: CephStorage
+  description: |
+    Ceph OSD Storage node role
+  networks:
+    - Storage
+    - StorageMgmt
+    - InternalApi
+  uses_deprecated_params: False
+  deprecated_nic_config_name: 'ceph-storage.yaml'
+  ServicesDefault:
+    - OS::TripleO::Services::Aide
+    - OS::TripleO::Services::AuditD
+    - OS::TripleO::Services::CACerts
+    - OS::TripleO::Services::CephOSD
+    - OS::TripleO::Services::CertmongerUser
+    - OS::TripleO::Services::Collectd
+    - OS::TripleO::Services::Docker
+    - OS::TripleO::Services::Fluentd
+    - OS::TripleO::Services::IpaClient
+    - OS::TripleO::Services::Ipsec
+    - OS::TripleO::Services::Kernel
+    - OS::TripleO::Services::LoginDefs
+    - OS::TripleO::Services::MetricsQdr
+    - OS::TripleO::Services::MySQLClient
+    - OS::TripleO::Services::Ntp
+    - OS::TripleO::Services::ContainersLogrotateCrond
+    - OS::TripleO::Services::Rhsm
+    - OS::TripleO::Services::RsyslogSidecar
+    - OS::TripleO::Services::Securetty
+    - OS::TripleO::Services::SensuClient
+    - OS::TripleO::Services::Snmp
+    - OS::TripleO::Services::Sshd
+    - OS::TripleO::Services::Timezone
+    - OS::TripleO::Services::TripleoFirewall
+    - OS::TripleO::Services::TripleoPackages
+    - OS::TripleO::Services::Tuned
+    - OS::TripleO::Services::Ptp
+
+The info regarding creating a custom role is found in https://docs.openstack.org/tripleo-docs/latest/install/advanced_deployment/custom_roles.html
+
+So when composable services MetricsQdr and Collectd is enabled along with internal_tls then overcloud should be deployed as 
+    openstack overcloud deploy \
+    ...
+    ...
+    -r ~/roles_data.yaml \
+    ...
+    ...
+  
