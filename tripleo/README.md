@@ -46,7 +46,7 @@ to deploy the `metrics-collectd-qdr.yaml` environment (configuration via
 `qdr.yaml`) and the `collectd-environment.yaml` environment (configuration via
 `collectd.yaml`).
 
-# When TLS is enabled.
+# Deploying When InternalTLS is enabled.
 
 Currently cert files can be generated for metrics_qdr via enabling internal TLS, which can be
 used to secure internal communication, # NOTE(vinaykns) at present this may not be useful but 
@@ -95,6 +95,7 @@ pass that during overcloud deployment. The custom ceph role looks something like
 The info regarding creating a custom role is found in https://docs.openstack.org/tripleo-docs/latest/install/advanced_deployment/custom_roles.html
 
 So when composable services MetricsQdr and Collectd is enabled along with internal_tls then overcloud should be deployed as 
+    
     openstack overcloud deploy \
     ...
     ...
