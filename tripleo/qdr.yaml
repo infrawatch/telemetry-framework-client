@@ -1,4 +1,5 @@
 parameter_defaults:
+  #DnsServers: ["10.19.110.3","127.0.0.1"]
   CollectdConnectionType: amqp1
   CollectdAmqpInstances:
     telemetry:
