@@ -1,0 +1,27 @@
+parameter_defaults:
+    CollectdAmqpInstances:
+        telemetry:
+            format: JSON
+            presettle: true
+    CollectdDefaultPollingInterval: 1
+    CollectdConnectionType: amqp1
+    CollectdExtraPlugins:
+    - cpu
+    - df
+    - hugepages
+    - ovs_events
+    - ovs_stats
+    - load
+    - uptime
+    DnsServers:
+    - 10.19.110.3
+    - 10.46.0.31
+    - 10.46.0.32
+    MetricsQdrConnectors:
+    -   host: qdr-white-port-5671-sa-telemetry.apps.dev7.nfvpe.site
+        port: 443
+        role: edge
+        sslProfile: sslProfile
+        verifyHostname: false
+    MetricsQdrSSLProfiles:
+    -   name: sslProfile
