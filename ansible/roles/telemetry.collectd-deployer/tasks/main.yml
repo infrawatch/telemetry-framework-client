@@ -10,6 +10,7 @@
   docker_image:
     name: "{{ collectd_image }}"
     tag: "{{ collectd_image_tag }}"
+    source: pull
 
 - name: Create directory for collectd configuration
   file:
@@ -17,7 +18,7 @@
     path: "{{ item }}"
   with_items:
     - "{{ collectd_kolla_config_files }}"
-    - "{{ collectd_config_data_puppet_generated }}/etc"
+    - "{{ collectd_config_data_puppet_generated }}/etc/collectd.d"
 
 - name: Deploy kolla configuration for collectd on host
   copy:

@@ -1,24 +1,30 @@
 ---
-qdr_dns_servers: 10.19.110.3
+qdr_dns_servers: 127.0.0.1
+qdr_kolla_config_files: /var/lib/kolla/config_files
+qdr_config_data_puppet_generated: /var/lib/config-data/puppet-generated/metrics-qdr
 qdr_image: quay.io/interconnectedcloud/qdrouterd
-qdr_image_tag: 1.5.0
-qdr_config_files: /opt/qdrouterd/etc
+qdr_image_tag: 1.8.0
+qdr_log_output_path: /var/log/qdrouterd/metrics-qdr.log
 
 router:
-    id_prefix: BAROMETER_ROUTER
-    mode: interior
+  mode: edge
+  id_prefix: Router
+  worker_threads: 2
+  debug_dump: /var/log/qdrouterd
+  sasl_config_path: /etc/sasl2
+  sasl_config_name: qdrouterd
 
 listeners:
-    - host: 0.0.0.0
-      port: 5672
-      role: normal
-    - host: 0.0.0.0
-      port: 5673
-      role: normal
+  - host: 0.0.0.0
+    port: 5666
+  - host: 0.0.0.0
+    port: 5672
+    role: normal
 
 connectors:
-    - name: central-qdr
-      role: inter-router
-      host: qdr-white-normal-sa-telemetry.apps.dev7.nfvpe.site
-      port: 443
-      verify_hostname: false
+  - name: minishift_saf
+    role: edge
+    ssl_profile: sslProfile
+    host: qdr-white-port-5671-sa-telemetry.127.0.0.1.nip.io
+    port: 443
+    verify_hostname: false
