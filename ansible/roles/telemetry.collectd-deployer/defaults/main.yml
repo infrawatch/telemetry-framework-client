@@ -1,6 +1,6 @@
 ---
-collectd_host: 127.0.0.1
-collectd_port: 5673
+collectd_host: 172.17.0.1
+collectd_port: 5666
 collectd_interval: 1
 collectd_kolla_config_files: /var/lib/kolla/config_files
 collectd_config_data_puppet_generated: /var/lib/config-data/puppet-generated/collectd
@@ -22,4 +22,3 @@ plugins:
   - memory
   - processes
   - uptime
-  - virt

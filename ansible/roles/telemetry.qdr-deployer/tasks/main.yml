@@ -1,13 +1,14 @@
 ---
-- name: Get QDR container image
-  docker_image:
-    name: "{{ qdr_image }}"
-    tag: "{{ qdr_image_tag }}"
-
 - name: create persistent logs directory
   file:
     path: /var/log/container/qdrouterd
     state: directory
+
+- name: Get QDR container image
+  docker_image:
+    name: "{{ qdr_image }}"
+    tag: "{{ qdr_image_tag }}"
+    source: pull
 
 - name: make sure old-style persistent logs directory exists
   file:
@@ -19,37 +20,50 @@
     state: directory
     path: "{{ item }}"
   with_items:
-    - "{{ qdr_config_files }}"
+    - "{{ qdr_kolla_config_files }}"
+    - "{{ qdr_config_data_puppet_generated }}/etc/qpid-dispatch"
 
 - name: Deploy configuration for QDR on client
   template:
     src: qdrouterd.conf.j2
-    dest: "{{ qdr_config_files }}/qdrouterd.conf"
+    dest: "{{ qdr_config_data_puppet_generated }}/etc/qpid-dispatch/qdrouterd.conf"
+
+- name: Deploy kolla configuration for qdr on host
+  copy:
+    src: "metrics-qdr.json"
+    dest: "{{ qdr_kolla_config_files }}/metrics-qdr.json"
 
 - name: Copy the certificate
   template:
     src: tls.crt.j2
-    dest: "{{ qdr_config_files }}/tls.crt"
+    dest: "/etc/pki/tls/certs/metrics_qdr.crt"
+  when: tls_certificate is defined
 
 - name: Copy the key
   template:
     src: tls.key.j2
-    dest: "{{ qdr_config_files }}/tls.key"
+    dest: "/etc/pki/tls/certs/metrics_qdr.key"
+  when: tls_key is defined
 
 - name: Start QDR container (cloud side)
   docker_container:
     name: qdr
     image: "{{ qdr_image }}:{{ qdr_image_tag }}"
-    exposed_ports: 5673/tcp
+    entrypoint: /usr/sbin/qdrouterd -c /var/lib/kolla/config_files/src/etc/qpid-dispatch/qdrouterd.conf
+    exposed_ports: 5666/tcp
     volumes:
-      - "{{ qdr_config_files }}:/tmp:ro"
+      - "{{ qdr_kolla_config_files }}/metrics-qdr.json:/var/lib/kolla/config_files/config.json:ro"
+      - "{{ qdr_config_data_puppet_generated }}:/var/lib/kolla/config_files/src:ro"
       - /var/log/containers/qdrouterd:/var/log/qdrouterd:rw
       - /var/run/openvswitch:/var/run/openvswitch:ro
       - /var/run/ceph:/var/run/ceph:ro
       - /var/run/libvirt:/var/run/libvirt:ro
+    env:
+      KOLLA_CONFIG_STRATEGY: COPY_ALWAYS
     dns_servers: "{{ qdr_dns_servers }}"
     network_mode: host
     pid_mode: host
     privileged: true
     restart_policy: unless-stopped
     user: root
+  tags: update_only, restart

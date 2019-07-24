@@ -14,7 +14,6 @@ router {
 listener {
     host: {{ listener.host }}
     port: {{ listener.port }}
-    role: {{ listener.role }}
 {% if listener.role is defined %}    role: {{ listener.role }}
 {% endif %}
 }
@@ -38,8 +37,8 @@ connector {
 
 sslProfile {
     name: default
-    certFile: /tmp/tls.crt
-    privateKeyFile: /tmp/tls.key
+#    certFile: /tmp/tls.crt
+#    privateKeyFile: /tmp/tls.key
 }
 # Various address prefix -> distribution pattern
 # configurations:
@@ -72,4 +71,11 @@ address {
 address {
     prefix: collectd/telemetry
     distribution: multicast
+}
+
+log {
+   module: DEFAULT
+   enable: info+
+   timestamp: true
+   output: {{ qdr_log_output_path }}
 }
