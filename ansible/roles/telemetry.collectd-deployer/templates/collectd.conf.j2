@@ -13,7 +13,9 @@ WriteThreads 5
 # ------- Load Plugins -------
 
 LoadPlugin amqp1
-#LoadPlugin conntrack
+{% if 'connectivity' in plugins %}
+LoadPlugin connectivity
+{% endif %}
 {% if 'cpu' in plugins %}
 LoadPlugin cpu
 {% endif %}
@@ -71,14 +73,13 @@ LoadPlugin virt
   <Transport "name">
     Host "{{ collectd_host }}"
     Port "{{ collectd_port }}"
-#    User "guest"
-#    Password "guest"
     Address "collectd"
-#    RetryDelay 1
-#    <Instance "log">
-#        Format JSON
-#        PreSettle false
-#    </Instance>
+    RetryDelay 1
+    <Instance "notify">
+        Format JSON
+        PreSettle false
+        Notify true
+    </Instance>
     <Instance "telemetry">
         Format JSON
         PreSettle true

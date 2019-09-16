@@ -73,9 +73,14 @@ address {
     distribution: multicast
 }
 
+address {
+    prefix: collectd/notify
+    distribution: multicast
+}
+
 log {
    module: DEFAULT
    enable: info+
-   timestamp: true
-   output: {{ qdr_log_output_path }}
+   includeTimestamp: true
+   outputFile: {{ qdr_log_output_path }}
 }
